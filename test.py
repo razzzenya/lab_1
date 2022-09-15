@@ -98,7 +98,7 @@ for years in range(year_counter, current_year + 1):   #   −
             elements = stroki[i].find_all('td')
             output=[]
             output = DataToList(output , elements)#список для вывода
-            with open('example.csv','a',encoding='cp1251') as csvfile:
+            with open('example.csv','a',encoding='utf-8') as csvfile:
                     writer = csv.writer(csvfile)
                     writer.writerow((output[0],output[1],output[2],output[3],output[4],output[5],output[6]))
         if flag_month == 1:
