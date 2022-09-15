@@ -8,46 +8,43 @@ from enum import Enum
 
 def MaxYear_checker(url): #функция проверки последнего года доступного на сайте
     flag=0
-    url_tmp = url
     year_counter=2008
     
     while (flag==0): # цикл пробегает по всем возможным годам путём замены ссылки . В случае не существующей страницы смотреть стр.34
-        html_text = requests.get(url_tmp, headers={'User-Agent':'agent'}).text 
+        html_text = requests.get(url, headers={'User-Agent':'agent'}).text 
         data = BeautifulSoup(html_text, 'lxml')
         if data.find('span', class_='grey error-span'): # проверка существования элемента на странице , который отвечает за ошибку 404
             flag = 1
             year_counter -= 1
         else:
             year_counter += 1
-            url_tmp = url_tmp.replace(str(year_counter-1),str(year_counter)) #замена года в url с предыдущего на текущий
+            url = url.replace(str(year_counter-1),str(year_counter)) #замена года в url с предыдущего на текущий
 
     return year_counter
 
 def MaxMonth_checker(url, current_year):  #функция проверки последнего месяца доступного на сайте
     flag=0
-    year_tmp = current_year
-    url_b = url.replace('2008',str(year_tmp)) #url который содержит в себе текущий год
+    url = url.replace('2008',str(current_year)) #url который содержит в себе текущий год
     month_counter = 1
     while (flag==0): # цикл пробегает по всем возможным месяцам путём замены ссылки . В случае не существующей страницы смотреть стр.34
-        html_text = requests.get(url_b, headers={'User-Agent':'agent'}).text
+        html_text = requests.get(url, headers={'User-Agent':'agent'}).text
         data = BeautifulSoup(html_text, 'lxml')
         if data.find('span', class_='grey error-span'): # проверка существования элемента на странице , который отвечает за ошибку 404
             flag = 1
             month_counter -= 1
         else:
             month_counter += 1
-            url_b=url_b[0:39]+ '/' + str(month_counter) + '/'  #с месяцами функция .replace делает неправильную замену , поэтому перезаписываю старую ссылку в переменную и меняю в ней послдение цифры
+            url=url[0:39]+ '/' + str(month_counter) + '/'  #с месяцами функция .replace делает неправильную замену , поэтому перезаписываю старую ссылку в переменную и меняю в ней послдение цифры
     return month_counter
 
 def UrlMonthChange (url, months, flag):
-    url_tmp = url
     if flag == 1: # случай когда месяц является 12 , то есть - последним. Необходим переход на след. год , поэтому меняю значение 'months' на 1
         months = 1
-        url = url_tmp[0:39] + '/' + str(months) + '/'
+        url = url[0:39] + '/' + str(months) + '/'
     elif flag == 2:
-        url = url_tmp[0:39] + '/' + str(months) + '/' 
+        url = url[0:39] + '/' + str(months) + '/' 
     elif flag == 3:
-        url = url_tmp[0:39] + '/' + str(months) + '/'
+        url = url[0:39] + '/' + str(months) + '/'
     return url
 
 def UrlYearChange (url, years):
