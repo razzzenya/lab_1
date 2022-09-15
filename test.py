@@ -4,7 +4,6 @@ import os
 from bs4 import BeautifulSoup
 import requests
 import csv
-from enum import Enum
 
 def MaxYear_checker(url): #функция проверки последнего года доступного на сайте
     flag=0
@@ -35,6 +34,7 @@ def MaxMonth_checker(url, current_year):  #функция проверки по�
         else:
             month_counter += 1
             url=url[0:39]+ '/' + str(month_counter) + '/'  #с месяцами функция .replace делает неправильную замену , поэтому перезаписываю старую ссылку в переменную и меняю в ней послдение цифры
+    
     return month_counter
 
 def UrlMonthChange (url, months, flag):
