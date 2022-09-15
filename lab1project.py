@@ -9,7 +9,7 @@ def MaxYear_checker(url): #функция проверки последнего 
     flag=0
     year_counter=2008
     
-    while (flag==0): # цикл пробегает по всем возможным годам путём замены ссылки . В случае не существующей страницы смотреть стр.34
+    while (flag==0): # цикл пробегает по всем возможным годам путём замены ссылки . В случае не существующей страницы цикл while останавливается
         html_text = requests.get(url, headers={'User-Agent':'agent'}).text 
         data = BeautifulSoup(html_text, 'lxml')
         if data.find('span', class_='grey error-span'): # проверка существования элемента на странице , который отвечает за ошибку 404
@@ -21,9 +21,8 @@ def MaxYear_checker(url): #функция проверки последнего 
 
     return year_counter
 
-def MaxMonth_checker(url, current_year):  #функция проверки последнего месяца доступного на сайте
+def MaxMonth_checker(url):  #функция проверки последнего месяца доступного на сайте
     flag=0
-    url = url.replace('2008',str(current_year)) #url который содержит в себе текущий год
     month_counter = 1
     while (flag==0): # цикл пробегает по всем возможным месяцам путём замены ссылки . В случае не существующей страницы смотреть стр.34
         html_text = requests.get(url, headers={'User-Agent':'agent'}).text
@@ -65,7 +64,7 @@ for years in range(year_counter, current_year + 1):
     url = UrlYearChange(url, years)
     maxmonth = 12
     if (years == current_year):
-        maxmonth = MaxMonth_checker(url, years)
+        maxmonth = MaxMonth_checker(url)
 
     for months in range(1, maxmonth + 1): 
         flag_month = 0
