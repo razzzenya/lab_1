@@ -60,16 +60,13 @@ def DataToList (output, elements):
     output.append(elements[6].text)
     output.append(elements[7].text)
     output.append(elements[10].text)
-    for i in range(len(output)):
-        if output[i] == '−':
-            output[i] = '-'
     return output
 
 url = 'https://www.gismeteo.ru/diary/4618/2008/1/' # изначальная ссылка , самым ранним годом имеющим данные является 2008
 year_counter = 2008
 current_year = MaxYear_checker(url) #заранее узнаём максимальный год доступный на сайте , для 1-го цикла for
 
-for years in range(year_counter, current_year + 1):   #   −
+for years in range(year_counter, current_year + 1):  
     url = UrlYearChange(url, years)
     maxmonth = 12
     if (years == current_year):
