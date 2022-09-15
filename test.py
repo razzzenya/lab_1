@@ -103,3 +103,4 @@ for years in range(year_counter, current_year + 1):   #   −
                     writer.writerow((output[0],output[1],output[2],output[3],output[4],output[5],output[6]))
         if flag_month == 1:
            url = UrlMonthChange(url, months, 1)
+print(321)
