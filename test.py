@@ -26,8 +26,7 @@ def MaxYear_checker(url): #функция проверки последнего 
 def MaxMonth_checker(url, current_year):  #функция проверки последнего месяца доступного на сайте
     flag=0
     year_tmp = current_year
-    url_tmp = url.replace('2008',str(year_tmp))
-    url_b = url_tmp
+    url_b = url.replace('2008',str(year_tmp)) #url который содержит в себе текущий год
     month_counter = 1
     while (flag==0): # цикл пробегает по всем возможным месяцам путём замены ссылки . В случае не существующей страницы смотреть стр.34
         html_text = requests.get(url_b, headers={'User-Agent':'agent'}).text
