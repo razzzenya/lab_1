@@ -41,8 +41,6 @@ def UrlMonthChange (url, months, flag):
         url = url[0:39] + '/1/' # здесь заменяется 12-ый месяц в ссылке на 1-ый
     elif flag == 2:
         url = url[0:39] + '/' + str(months) + '/' 
-    elif flag == 3:
-        url = url[0:39] + '/' + str(months) + '/'
     return url
 
 def UrlYearChange (url, years):
@@ -68,10 +66,10 @@ for years in range(year_counter, current_year + 1):
     for months in range(1, max_month + 1): 
         flag_month = 0
         if (months == max_month):
-            url = UrlMonthChange(url, months, 3) 
+            url = UrlMonthChange(url, months, 2) 
             flag_month = 1
         elif (months < max_month):
-           url = UrlMonthChange(url, months, 2)
+            url = UrlMonthChange(url, months, 2)
 
 
         html_text = requests.get(url, headers={'User-Agent':'Ivan'}).text
