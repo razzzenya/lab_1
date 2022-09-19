@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 import requests
 import csv
 
-def MaxYear_checker(url): #функция проверки последнего года доступного на сайте
+def MaxYearChecker(url): #функция проверки последнего года доступного на сайте
     flag=0
     year_counter=2008
     
@@ -17,11 +17,11 @@ def MaxYear_checker(url): #функция проверки последнего 
             year_counter -= 1
         else:
             year_counter += 1
-            url = url.replace(str(year_counter-1),str(year_counter)) #замена года в url с предыдущего на текущий
+            url = url.replace(str(year_counter - 1),str(year_counter)) #замена года в url с предыдущего на текущий
 
     return year_counter
 
-def MaxMonth_checker(url):  #функция проверки последнего месяца доступного на сайте
+def MaxMonthChecker(url):  #функция проверки последнего месяца доступного на сайте
     flag=0
     month_counter = 1
     while (flag==0): # цикл пробегает по всем возможным месяцам путём замены ссылки . В случае не существующей страницы смотреть стр.34
@@ -32,14 +32,13 @@ def MaxMonth_checker(url):  #функция проверки последнег�
             month_counter -= 1
         else:
             month_counter += 1
-            url=url[0:39]+ '/' + str(month_counter) + '/'  #с месяцами функция .replace делает неправильную замену , поэтому перезаписываю старую ссылку в переменную и меняю в ней послдение цифры
+            url = url[0:39]+ '/' + str(month_counter) + '/'  #с месяцами функция .replace делает неправильную замену , поэтому перезаписываю старую ссылку в переменную и меняю в ней послдение цифры
     
     return month_counter
 
 def UrlMonthChange (url, months, flag):
     if flag == 1: # случай когда месяц является 12 , то есть - последним. Необходим переход на след. год , поэтому меняю значение 'months' на 1
-        months = 1
-        url = url[0:39] + '/' + str(months) + '/'
+        url = url[0:39] + '/1/' # здесь заменяется 12-ый месяц в ссылке на 1-ый
     elif flag == 2:
         url = url[0:39] + '/' + str(months) + '/' 
     elif flag == 3:
@@ -58,29 +57,29 @@ def DataToList (output, elements):
 
 url = 'https://www.gismeteo.ru/diary/4618/2008/1/' # изначальная ссылка , самым ранним годом имеющим данные является 2008
 year_counter = 2008
-current_year = MaxYear_checker(url) #заранее узнаём максимальный год доступный на сайте , для 1-го цикла for
+current_year = MaxYearChecker(url) #заранее узнаём максимальный год доступный на сайте , для 1-го цикла for
 
 for years in range(year_counter, current_year + 1):  
     url = UrlYearChange(url, years)
-    maxmonth = 12
+    max_month = 12
     if (years == current_year):
-        maxmonth = MaxMonth_checker(url)
+        max_month = MaxMonthChecker(url)
 
-    for months in range(1, maxmonth + 1): 
+    for months in range(1, max_month + 1): 
         flag_month = 0
-        if (months == maxmonth):
+        if (months == max_month):
             url = UrlMonthChange(url, months, 3) 
             flag_month = 1
-        elif (months < maxmonth):
+        elif (months < max_month):
            url = UrlMonthChange(url, months, 2)
 
 
         html_text = requests.get(url, headers={'User-Agent':'Ivan'}).text
         soup = BeautifulSoup(html_text, 'lxml')
-        stroki = soup.find_all('tr', align='center')
+        lines = soup.find_all('tr', align = 'center')
 
-        for i in range (len(stroki)):
-            elements = stroki[i].find_all('td')
+        for i in range (len(lines)):
+            elements = lines[i].find_all('td')
             output=[]
             output = DataToList(output , elements)#список для вывода
             with open('example.csv','a',encoding='utf-8') as csvfile:
