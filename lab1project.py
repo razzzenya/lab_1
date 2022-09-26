@@ -23,7 +23,7 @@ def max_year_checker(url):
 def max_month_checker(url):
     flag = 0
     month_counter = 1
-    
+
     while (flag == 0):
         html_text = requests.get(url, headers={'User-Agent': 'agent'}).text
         data = BeautifulSoup(html_text, 'lxml')
@@ -100,8 +100,8 @@ for years in range(year_counter, current_year + 1):
             output = []
             output = data_to_list(output, elements)
             with open('result.csv', 'a', encoding='utf-8') as csvfile:
-                writer = csv.writer(csvfile)
-                writer.writerow(
-                    (str(years) + '-' + months_redact(months) + '-' + days_redact(output), output[1], output[2], output[3], output[4], output[5], output[6]))
+                writer = csv.writer(csvfile, lineterminator='\n')
+                writer.writerow((str(years) + '-' + months_redact(months) + '-' + days_redact(
+                    output), output[1], output[2], output[3], output[4], output[5], output[6]))
         if is_month_last == True:
             url = url_month_change(url, months, 1)
