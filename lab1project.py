@@ -23,6 +23,7 @@ def max_year_checker(url):
 def max_month_checker(url):
     flag = 0
     month_counter = 1
+    
     while (flag == 0):
         html_text = requests.get(url, headers={'User-Agent': 'agent'}).text
         data = BeautifulSoup(html_text, 'lxml')
@@ -56,6 +57,22 @@ def data_to_list(output, elements):
     return output
 
 
+def days_redact(output):
+    if (int(output[0]) < 10):
+        return ('0' + output[0])
+
+    else:
+        return (output[0])
+
+
+def months_redact(month):
+    if (month < 10):
+        return ('0' + str(month))
+
+    else:
+        return (str(month))
+
+
 url = 'https://www.gismeteo.ru/diary/4618/2008/1/'
 year_counter = 2008
 current_year = max_year_checker(url)
@@ -82,9 +99,9 @@ for years in range(year_counter, current_year + 1):
             elements = lines[i].find_all('td')
             output = []
             output = data_to_list(output, elements)
-            with open('example.csv', 'a', encoding='utf-8') as csvfile:
+            with open('result.csv', 'a', encoding='utf-8') as csvfile:
                 writer = csv.writer(csvfile)
                 writer.writerow(
-                    (output[0], output[1], output[2], output[3], output[4], output[5], output[6]))
+                    (str(years) + '-' + months_redact(months) + '-' + days_redact(output), output[1], output[2], output[3], output[4], output[5], output[6]))
         if is_month_last == True:
             url = url_month_change(url, months, 1)
